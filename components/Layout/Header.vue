@@ -28,7 +28,7 @@
         <!-- Mobile Menu (Hamburger Icon) -->
         <div class="md:hidden">
             <button
-                @click="toggleMobileMenu"
+                @click.stop="toggleMobileMenu"
                 class="focus:outline-none"
             >
                 <IconHamburgerMenu class="w-8 h-8" />
@@ -38,6 +38,7 @@
         <!-- Mobile Menu Dropdown -->
         <div
             v-if="isMobileMenuOpen"
+            ref="mobileMenu"
             class="absolute top-16 left-0 w-full bg-white text-indigo-700 shadow-lg z-50"
         >
             <div class="flex flex-col space-y-4 py-4 px-8">
@@ -62,7 +63,6 @@
         </div>
     </header>
 </template>
-
 <script setup>
 // Imports
 import { ref, onMounted, onBeforeUnmount } from "vue"
@@ -70,6 +70,7 @@ import { storeToRefs } from "pinia"
 
 // State to manage mobile menu visibility
 const isMobileMenuOpen = ref(false)
+const mobileMenu = ref(null)
 
 // Toggle mobile menu
 const toggleMobileMenu = () => {
@@ -83,14 +84,24 @@ const handleResize = () => {
     }
 }
 
-// Set up the resize listener
+// Function to handle click outside of the mobile menu
+const handleClickOutside = (event) => {
+    // Check if the click happened outside the mobile menu
+    if (mobileMenu.value && !mobileMenu.value.contains(event.target)) {
+        isMobileMenuOpen.value = false
+    }
+}
+
+// Set up event listeners
 onMounted(() => {
     window.addEventListener('resize', handleResize)
+    document.addEventListener('click', handleClickOutside)
 })
 
-// Clean up the resize listener on unmount
+// Clean up event listeners on unmount
 onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize)
+    document.removeEventListener('click', handleClickOutside)
 })
 
 // Stores
@@ -98,10 +109,3 @@ const languageStore = useLanguageStore()
 const { languages, selectedLanguage } = storeToRefs(languageStore)
 const { setLanguage } = languageStore
 </script>
-
-<style scoped>
-.fi {
-    font-size: 1.2em;
-    /* Adjust flag size */
-}
-</style>

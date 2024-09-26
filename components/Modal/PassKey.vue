@@ -2,10 +2,10 @@
     <!-- Modal overlay -->
     <div
         v-if="!isValidated"
-        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-sm z-50"
+        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-sm z-50 p-4"
     >
         <transition name="fade">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg max-w-sm w-full">
                 <h2 class="text-lg font-bold mb-2">App blocker</h2>
                 <p class="text-sm mb-4">Enter the pass key to use this app.</p>
                 <form @submit.prevent="handleSubmit">
@@ -33,7 +33,6 @@
         </transition>
     </div>
 </template>
-
 <script setup>
 import { usePassKeyStore } from "~/stores/usePassKeyStore"
 import { storeToRefs } from "pinia";
