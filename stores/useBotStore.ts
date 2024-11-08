@@ -16,8 +16,6 @@ export const useBotStore = defineStore("bot", () => {
             You understand the nuances, grammar, idiomatic expressions, and cultural contexts of each language. 
             Your translations are accurate, contextually appropriate, and maintain the original meaning while adapting to linguistic differences.
             Translate the following message to ${language}.
-
-            Under no condition should it return a message longer than 600 characters. Purpose: avoid overuse of resources.
         `
 
         loading.value = true
